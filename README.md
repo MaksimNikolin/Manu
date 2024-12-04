@@ -1,4 +1,4 @@
-in process ..
+project in progress ..
 
 
 Manuscripts Scanner
