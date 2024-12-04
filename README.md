@@ -1,36 +1,45 @@
-# OCR & Real-time Text Detection
-Real-time OCR with openCV EAST & Tesseract.<br/>
-
-_Requires openCV 3.4.2 or above._<br/>
-_Requires Tesseract 4.0 or above._
-
-## Real Time OCR
-For text recognition on a live web-cam feed:
-```commandline
-python real_time_ocr.py --east frozen_east_text_detection.pb
-```
-
-For text recognition on a video file:
-```commandline
-python real_time_ocr.py --east frozen_east_text_detection.pb --video test.avi
-```
+in process ..
 
 
-## Text Detection
-For text detection on image:
-```commandline
-python text_detection.py --image test.png --east frozen_east_text_detection.pb
-```
+Manuscripts Scanner
+An OCR project, to scan cyrillic and arabic materials, and translate them into Russian / English to preserve history of Uzbek culture and science works
+Docker Compose is deploying a Python flask webserver on a Uvicorn (ASGI), and on the deployment server there is a nginx reverse proxy
 
-For text detection on video or web-cam:
-```commandline
-python video_text_detection.py --east frozen_east_text_detection.pb
-python video_text_detection.py --east frozen_east_text_detection.pb --video test.avi
-```
 
-## Text Recognition
-For text recognition on image:
-```commandline
-python text_recognition.py --east frozen_east_text_detection.pb --image test.png
-python text_recognition.py --east frozen_east_text_detection.pb --image test.png --padding 0.25
-```
+Local testing (with Powershell / Mingw64 / WSL / Linux)
+
+
+Create a venv in main folder
+python3 -m venv .venv
+
+
+Activate it
+Windows powershell: .\.venv\Scripts\Activate.ps1
+Windows bash (e.g. mingw64): source .venv/Scripts/activate
+Linux / WSL: source .venv/bin/activate
+
+
+Install all requirements
+pip3 install -r requirements.txt
+
+
+Running with environment variable
+
+
+Add environment variable
+Windows powershell: set TAHRIRCHI_API_TOKEN "TOKEN"
+Windows bash (e.g. mingw64): export TAHRIRCHI_API_TOKEN="TOKEN"
+Linux / WSL: export TAHRIRCHI_API_TOKEN="TOKEN"
+
+
+Run the webserver as a python script or by uvicorn (both automatically start a uvicorn ASGI webserver on http://localhost:8000):
+uvicorn app:asgi OR python app.py
+
+
+
+
+Run without environment variable
+
+
+Run the webserver as a python module (which automatically starts a uvicorn ASGI webserver on http://localhost:8000):
+python3 app.py TAHRIRCHI_API_TOKEN=TOKEN
