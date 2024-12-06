@@ -1,3 +1,6 @@
+in progress ..
+
+
 # Manuscripts Scanner
 
 An OCR project, to scan cyrillic and arabic materials, and translate them into Russian / English to preserve history of Uzbek culture and science works
