@@ -1,0 +1,31 @@
+<!-- templates/result.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fine-tuned EasyOCR</title>
+</head>
+<body>
+    <h2>Fine-tuned EasyOCR</h3>
+    
+    <h3>Загруженные изображения</h3>
+    {% for image in images -%}
+        <img src="{{ url_for('static', filename='uploads/' + image) }}" width="300">
+    {% endfor %}
+    
+    <br>
+
+    <h3>Результат распознавания:</h3>
+    <p>{{ ocr_text }}</p>
+
+    <br>
+
+    <h3>Перевод распознанного текста:</h3>
+    <p>{{ translated_text }}</p>
+
+    <br>
+
+    <a href="/">Загрузка новых изображений</a>
+</body>
+</html>

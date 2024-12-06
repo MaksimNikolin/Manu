@@ -1,0 +1,39 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Image</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+</head>
+<body>
+    <h1>Fine-tuned EasyOCR</h1>
+
+    <form method="POST" enctype="multipart/form-data" action="/">
+      <label for="source_lang">Выберите входной язык:</label>
+      <select name="source_lang" id="source_lang">
+          <option value="uzn_Cyrl" selected="selected">Узбек тили</option>
+          <option value="uzn_Latn">O'zbek tili</option>
+      </select>
+  
+      <br>
+  
+      <label for="target_lang">Выберите выходной язык:</label>
+      <select name="target_lang" id="target_lang">
+          <option value="rus_Cyrl" selected="selected">Русский язык</option>
+          <option value="uzn_Latn">O'zbek tili (latin)</option>
+          <option value="eng_Latn">English</option>
+      </select>
+  
+      <br>
+  
+      <label for="files">Выберите файлы:</label>
+      <input type="file" name="file[]" id="files" multiple>
+  
+      <br>
+  
+      <input type="submit" value="Добавить">
+  </form>  
+</body>
+</html>
