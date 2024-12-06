@@ -1,0 +1,14 @@
+services:
+  webserver:
+    image: asgi-flask-webserver
+    ports:
+      - "127.0.0.1:8080:80"
+    networks:
+     - reverse_proxy
+    restart: always
+    environment:
+      - TAHRIRCHI_API_TOKEN=$TAHRIRCHI_API_TOKEN
+
+networks:
+  reverse_proxy:
+    external: true

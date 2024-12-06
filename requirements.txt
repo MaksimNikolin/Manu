@@ -1,0 +1,5 @@
+flask[async]
+uvicorn[standard]
+torch
+easyocr
+requests
