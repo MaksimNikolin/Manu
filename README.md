@@ -1,5 +1,4 @@
-in progress ..
-
+_**date of creation: December, 2024**_
 
 # Manuscripts Scanner
 
