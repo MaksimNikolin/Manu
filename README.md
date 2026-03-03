@@ -1,6 +1,6 @@
 _**date of creation: December, 2024**_
 
-# Manuscripts Scanner
+# v1_Manuscripts Scanner
 
 An OCR project, to scan cyrillic and arabic materials, and translate them into Russian / English to preserve history of Uzbek culture and science works
 
@@ -46,3 +46,15 @@ Docker Compose is deploying a Python flask webserver on a Uvicorn (ASGI), and on
         
         `python3 app.py TAHRIRCHI_API_TOKEN=TOKEN`
 
+
+# v2_Manuscripts Scanner
+
+Шаг1 - Выделяем боксы через tesseract (bbox_ocr.py). 
+Шаг2 - Убираем пересекающиеся маленькие боксы, широкие боксы, маленькие боксы - они будут шуметь.  
+Оставляем только качественные токены.  
+Шаг3 - Сохраняем орезанные картинки.  
+Шаг4 - Прогоняем через OpenAI для перевода и добавляем в БД.  
+Шаг5 - Сбор данных. (Повторяем шаги 1-4 для 500 страниц текста).  
+Шаг5 - Обучаем модель - Yolo.  
+Шаг6 - Смотрим качество предсказания (10 страниц).  
+Шаг7 - Дособираем нужное количество страниц чтобы выйти на плато.
