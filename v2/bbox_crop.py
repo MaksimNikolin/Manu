@@ -1,4 +1,4 @@
-# python bbox_crop.py original/test.jpg
+# Usage - python bbox_crop.py original/test.jpg
 
 import pandas as pd
 import cv2
