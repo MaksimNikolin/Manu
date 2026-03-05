@@ -1,80 +1,69 @@
 # Usage - python paddle_ocr_words.py cropped_boxes/test markup/test
 
-import sys
 from pathlib import Path
 from paddleocr import PaddleOCR
-from tqdm import tqdm
+import json
+import os
+import logging
 
-TOP_K = 3
+# Настройка логгирования
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S"
+)
 
+input_folder = Path("cropped_boxes/test")
+output_folder = Path("markup/test")
+output_folder.mkdir(parents=True, exist_ok=True)
 
-def get_images(folder):
-    exts = {".png", ".jpg", ".jpeg", ".bmp"}
-    return [p for p in sorted(folder.iterdir()) if p.suffix.lower() in exts]
+# Проверяем словарь
+rec_dict_path = Path(os.environ['VIRTUAL_ENV']) / "lib/python3.11/site-packages/paddleocr/ppocr/utils/dict/arabic_dict.txt"
+if not os.path.isfile(rec_dict_path):
+    logging.error(f"Файл словаря не найден: {rec_dict_path}")
+else:
+    logging.info(f"Файл словаря найден ✅ {rec_dict_path}")
 
+# Пути к моделям
+det_model_path = "/Users/ggang/.paddleocr/whl/det/ml/Multilingual_PP-OCRv3_det_infer"
+rec_model_path = "/Users/ggang/.paddleocr/whl/rec/arabic/arabic_PP-OCRv4_rec_infer"
+cls_model_path = "/Users/ggang/.paddleocr/whl/cls/ch_ppocr_mobile_v2.0_cls_infer"
 
-def save_results(file_path, results):
-    with open(file_path, "w", encoding="utf-8") as f:
-        for i, (text, score) in enumerate(results[:TOP_K], 1):
-            f.write(f"{i}. {text} {score:.4f}\n")
+# Инициализация OCR
+logging.info("Инициализация PaddleOCR...")
+ocr = PaddleOCR(
+    lang="ar",
+    use_angle_cls=True,
+    det_model_dir=det_model_path,
+    rec_model_dir=rec_model_path,
+    cls_model_dir=cls_model_path,
+    use_gpu=False,
+    rec_char_dict_path=str(rec_dict_path)
+)
+logging.info("PaddleOCR готов ✅")
 
+# Обработка изображений
+for img_path in input_folder.iterdir():
+    if not img_path.is_file():
+        continue
 
-def process_batch(ocr, images, output_dir):
     try:
-        results = ocr.ocr([str(img) for img in images], cls=True)
+        logging.info(f"Обрабатываем {img_path.name}...")
+        result = ocr.ocr(str(img_path))
+        processed = []
 
-        for img_path, res in zip(images, results):
-            out_file = output_dir / f"{img_path.stem}.txt"
+        for line in result:
+            text = line[1][0]
+            score = float(line[1][1])
+            processed.append((text, score))
 
-            if not res:
-                with open(out_file, "w") as f:
-                    f.write("No text detected\n")
-                continue
+        top3 = sorted(processed, key=lambda x: x[1], reverse=True)[:3]
 
-            parsed = [(line[1][0], line[1][1]) for line in res]
+        out_file = output_folder / f"{img_path.stem}.json"
+        with open(out_file, "w", encoding="utf-8") as f:
+            json.dump(top3, f, ensure_ascii=False, indent=2)
 
-            parsed = sorted(parsed, key=lambda x: x[1], reverse=True)
-
-            save_results(out_file, parsed)
+        logging.info(f"Готово: {img_path.name} -> {out_file.name}")
 
     except Exception as e:
-        print(f"Batch error: {e}")
-
-
-def main(input_dir, output_dir, batch_size=16):
-
-    input_dir = Path(input_dir)
-    output_dir = Path(output_dir)
-
-    if not input_dir.exists():
-        raise ValueError(f"Input folder not found: {input_dir}")
-
-    output_dir.mkdir(parents=True, exist_ok=True)
-
-    images = get_images(input_dir)
-
-    print(f"Images found: {len(images)}")
-
-    ocr = PaddleOCR(
-        use_angle_cls=True,
-        lang="ar",
-        use_textline_orientation=True
-    )
-
-    for i in tqdm(range(0, len(images), batch_size)):
-
-        batch = images[i:i + batch_size]
-
-        process_batch(ocr, batch, output_dir)
-
-
-if __name__ == "__main__":
-
-    if len(sys.argv) < 3:
-        print("Usage: python paddle_ocr_words.py <input_folder> <output_folder>")
-        sys.exit(1)
-
-    input_folder = sys.argv[1]
-    output_folder = sys.argv[2]
-
-    main(input_folder, output_folder)
+        logging.error(f"OCR ошибка для {img_path.name}: {e}")
