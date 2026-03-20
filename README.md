@@ -1,5 +1,3 @@
-_**date of creation: December, 2024**_
-
 # v1_Manuscripts Scanner
 
 An OCR project, to scan cyrillic and arabic materials, and translate them into Russian / English to preserve history of Uzbek culture and science works
@@ -55,12 +53,12 @@ Docker Compose is deploying a Python flask webserver on a Uvicorn (ASGI), and on
 Шаг3 - Сохраняем обрезанные картинки.  +  
 Шаг4 - Прогоняем через PaddleOCR для перевода и добавляем в БД.  + (потом можно взять платные для   
 более точного распознавания)  +  
-Шаг5 - Сбор данных. (Повторяем шаги 1-4 для 500 страниц текста).   - PaddleOCR  
+Шаг5 - Сбор данных. (Повторяем шаги 1-4 для 500 страниц текста).   - PaddleOCR ??  
 Шаг5 - Обучаем модель - Yolo.  
 Шаг6 - Смотрим качество предсказания (10 страниц).  
 Шаг7 - Дособираем нужное количество страниц чтобы выйти на плато.
 
-Архитектура проекта  
+Структура репозитория  
 
 Manu_v2/  
 │  
