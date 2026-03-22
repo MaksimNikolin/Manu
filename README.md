@@ -61,17 +61,46 @@ Docker Compose is deploying a Python flask webserver on a Uvicorn (ASGI), and on
 Структура репозитория  
 
 Manu_v2/  
+project/  
 │  
-├── original/                    - оригинальные страницы  
-├── bboxes/                      - страницы с размеченными всеми боксами  
-├── filtered/                    - страницы с размеченными отфильтрованными боксами  
-├── cropped_boxes/               - обрезанные боксы с паддингами  
-├── markup/                      - топ-3 распознанных слов
+├── data/  
+│   ├── raw/                 # original (как есть)  
+│   ├── interim/             # bbox, filtered  
+│   ├── processed/           # cropped_boxes  
+│   ├── annotations/         # csvs (разметка)  
+│   └── translations/        # переводы GPT  
 │  
-├── csvs_original/               - все размеченные боксы  
-├── csvs_filtered/               - отфильтрованные боксы  
+├── src/  
+│   ├── pipelines/  
+│   │   ├── bbox.py  
+│   │   ├── filter.py  
+│   │   ├── crop.py  
+│   │   └── ocr.py  
+│   │  
+│   ├── services/  
+│   │   ├── tesseract.py  
+│   │   ├── paddle.py  
+│   │   └── gpt_translate.py  
+│   │  
+│   ├── domain/  
+│   │   ├── bbox.py  
+│   │   ├── image.py  
+│   │   └── text.py  
+│   │  
+│   ├── utils/  
+│   │   └── io.py  
+│   │  
+│   └── config.py  
 │  
-├── bbox_ocr.py                  - скрипт для разметки всех боксов  
-├── bbox_filter.py               - скрипт для фильтрации боксов  
-├── bbox_crop.py                 - скрипт для обрезки боксов  
-├── paddle_ocr_words.py          - скрипт для распознавания (топ-3 PaddleOCR)
+├── experiments/  
+│   ├── 01_bbox_analysis.ipynb  
+│   ├── 02_ocr_quality.ipynb  
+│   └── 03_translation_tests.ipynb  
+│  
+├── scripts/  
+│   ├── run_pipeline.py  
+│   └── translate_boxes.py  
+│  
+├── Makefile  
+├── pyproject.toml  
+└── README.md  
