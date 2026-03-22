@@ -1,0 +1,14 @@
+[tool.black]
+line-length = 100
+target-version = ["py310"]
+skip-string-normalization = false
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+select = ["E", "F", "W", "I"]
+ignore = ["E501"]  # длину строки проверяет black
+
+[tool.ruff.lint.isort]
+known-first-party = ["app"]
+combine-as-imports = true
