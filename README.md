@@ -58,7 +58,7 @@ Docker Compose is deploying a Python flask webserver on a Uvicorn (ASGI), and on
 Шаг6 - Смотрим качество предсказания (10 страниц).  
 Шаг7 - Дособираем нужное количество страниц чтобы выйти на плато.
 
-Структура репозитория  
+# Структура репозитория  
 
 Manu_v2/  
 project/  
